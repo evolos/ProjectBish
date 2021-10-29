@@ -1,77 +1,22 @@
-# We're using Alpine Edge
-FROM alpine:edge
-
-#
-# We have to uncomment Community repo for some packages
-#
-RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
-
-#
-# Installing Packages
-#
-RUN apk add --no-cache=true --update \
-    coreutils \
-    bash \
-    build-base \
-    bzip2-dev \
-    curl \
-    figlet \
-    gcc \
-    g++ \
-    git \
-    aria2 \
-    util-linux \
-    libevent \
-    jpeg-dev \
-    libffi-dev \
-    libpq \
-    libwebp-dev \
-    libxml2 \
-    libxml2-dev \
-    libxslt-dev \
-    linux-headers \
-    musl \
-    neofetch \
-    openssl-dev \
-    postgresql \
-    postgresql-client \
-    postgresql-dev \
-    openssl \
-    pv \
-    jq \
-    wget \
-    python3 \
-    python3-dev \
-    readline-dev \
-    sqlite \
-    ffmpeg \
-    sqlite-dev \
-    sudo \
-    chromium \
-    chromium-chromedriver \
-    zlib-dev \
-    jpeg \
-    zip \
-    freetype-dev
-
-RUN python3 -m ensurepip \
-    && pip3 install --upgrade pip setuptools \
-    && pip3 install wheel \
-    && rm -r /usr/lib/python*/ensurepip && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
-    rm -r /root/.cache
+# We're using Ubuntu 20.10
+FROM ximfine/xproject:buster
 
 #
 # Clone repo and prepare working directory
 #
-RUN git clone -b master https://github.com/evolos/ProjectBish /home/projectbish/
-RUN mkdir /home/projectbish/bin/
-WORKDIR /home/projectbish/
+RUN git clone -b master https://github.com/evolos/projectbish /home/xnewbie/
+RUN mkdir /home/xnewbie/bin/
+WORKDIR /home/xnewbie/
 
 #
-# Install requirements
+# Make open port TCP
 #
-RUN pip3 install -r requirements.txt
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+EXPOSE 80 443 8443
+
+# Upgrade pip
+RUN pip install --upgrade pip
+
+#Install python requirements
+# RUN pip3 install -r https://raw.githubusercontent.com/evolos/projectbish/master/requirements.txt
+
 CMD ["python3","-m","userbot"]
