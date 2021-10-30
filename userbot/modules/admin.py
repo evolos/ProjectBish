@@ -788,6 +788,37 @@ async def ungmoot(un_gmute):
             )
 
 
+@register(outgoing=True, group_only=True, pattern="^.gmute(?: |$)(.*)")
+@grp_exclude()
+async def gspider(gspdr):
+    """For .gmute command, gmutes the target in the userbot"""
+
+    # Check if the function running under SQL mode
+    if not is_mongo_alive() or not is_redis_alive():
+        await gspdr.edit(NO_SQL)
+        return
+    user = await helpers.get_user_from_event(gspdr)
+    if not user:
+        await gspdr.edit(
+            "`Missing user to gmute! Either reply to message, mention the user or specify a valid ID!`"
+        )
+
+    # If pass, inform and start gmuting
+    await gspdr.edit("`Gmuting...`")
+
+    if await gmute(user.id) is False:
+        await gspdr.edit("`Error! User is probably already gmuted.`")
+    else:
+        await gspdr.edit("`Gmuted!`")
+
+        if BOTLOG:
+            await gspdr.client.send_message(
+                BOTLOG_CHATID,
+                "#GMUTE\n"
+                f"USER: [{user.first_name}](tg://user?id={user.id})\n"
+                f"CHAT: {gspdr.chat.title}(`{gspdr.chat_id}`)",
+            )           
+
 
 @register(outgoing=True, pattern="^.bots$", groups_only=True)
 async def get_bots(show):
