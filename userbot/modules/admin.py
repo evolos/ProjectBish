@@ -868,6 +868,8 @@ CMD_HELP.update({
     "\n\n>`.unban <username/reply>`"
     "\nUsage: Removes the ban from the person in the chat."
     "\n\n>`.mute <username/reply> <reason (optional)>`"
+    "\n\n>`.gmute: Mutes a user in all groups you have in common with them and have permissions. Reply to the user or use their username/ID.>`"
+    "\n\n>`.ungmute: Ungmutes a user. Reply to the user or use their username/ID.>`"       
     "\nUsage: Mutes the person in the chat, works on admins too."
     "\n\n>`.unmute <username/reply>`"
     "\nUsage: Removes the person from the muted list."
